@@ -1,0 +1,64 @@
+package me.demo.service.drl;
+import me.demo.drools.domain.PointDO;
+import me.demo.drools.domain.Promotion;
+
+dialect  "mvel"
+
+//new member in 3 months
+rule newMemberIn3Months
+    salience 9
+    no-loop true //对于本规则引起的fact变化(例如调用update，modify等)，只执行一次，但对于其他规则引起的无效
+    activation-group "issue" //一个执行规则组，在同一个组内，只能有一个规则被执行
+    lock-on-active true //no-loop的增强版，其他规则引起的工作内存中的fact变化时，规则也被执行一次
+
+    when
+        $pointDO:PointDO(newMemberIn3Months==true) and $promotion:Promotion(inPromotion==true)
+    then
+        System.out.println("execute newMemberIn3Months rule!");
+        $pointDO.setPoint($pointDO.getConsumeTotal()*2+$promotion.getPoint());
+         //modify修改属性会引起规则重新执行
+        modify($pointDO){
+            setUserName("cat"),
+            setIssue(true)
+        }
+end
+
+//consume at weekend
+rule consumeAtweekend
+    salience 8
+    activation-group "issue"
+    lock-on-active true
+
+    when
+        $pointDO:PointDO(weekend==true)
+    then
+        System.out.println("execute consumeAtWeekend rule!");
+        $pointDO.setPoint($pointDO.getConsumeTotal()*2);
+        $pointDO.setIssue(true);
+        modify($pointDO){
+            setUserName("cat"),
+            setIssue(true)
+        };
+end
+
+//consume more than 10 times
+rule consumeGT10Times
+    salience 11
+    no-loop true
+    lock-on-active true
+    activation-group "issue"
+
+    when
+        $pointDO:PointDO(countOfMonth>10)
+    then
+        System.out.println("execute consumeGT10Times rule");
+        $pointDO.setPoint($pointDO.getPoint()+88);
+        $pointDO.setIssue(true);
+        modify($pointDO){
+            setUserName("cat"),
+            setIssue(true)
+        }
+end
+
+
+
