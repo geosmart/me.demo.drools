@@ -7,20 +7,23 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
+import me.demo.drools.domain.FireAlarm;
 import me.demo.drools.domain.PointDO;
 import me.demo.drools.domain.Promotion;
+import me.demo.drools.service.FireAlarmEngine;
 import me.demo.drools.service.PointIssueEngine;
-import me.demo.drools.service.PointIssueEngineImpl;
 
 /**
  * Test class for ESService
  * Created by geomart on 2016/8/24.
- * @see [https://github.com/liangbo/droolsdemo/blob/master/study_note.md]
  *
- * @see me.demo.drools.service.PointIssueEngineImpl
+ * @see [https://github.com/liangbo/droolsdemo/blob/master/study_note.md]
+ * @see PointIssueEngine
  */
-public class DroolsTest {
+public class PointIssueEngineTest {
 
     @Before
     public void setup() {
@@ -28,20 +31,21 @@ public class DroolsTest {
     }
 
     @Test
-    public void test_pointRule() {
-        PointIssueEngine engine = new PointIssueEngineImpl();
+    public void test_pointIssueEngine() {
+        PointIssueEngine engine = new PointIssueEngine();
 
         PointDO point = new PointDO();
-        point.setConsumeTotal(1000);
-        point.setBirthdayMonth(true);
-        point.setNewMemberIn3Months(true);
-        point.setCountOfMonth(20);
-        point.setWeekend(true);
         point.setUserName("Tom");
+        point.setConsumeTotal(1000);
+        point.setNewMemberIn3Months(false);
+        point.setWeekend(false);
+        point.setCountOfMonth(10);
+        point.setBirthdayMonth(true);
 
         Promotion promotion = new Promotion();
+        promotion.setInPromotion(false);
         engine.executeRuleEngine(Arrays.asList(point, promotion));
-        System.out.println("发放消费积分:" + point.getUserName() + ":" + point.getPoint());
+        point.print();
     }
 
     @After

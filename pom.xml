@@ -99,7 +99,7 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        
+
         <!--test -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
