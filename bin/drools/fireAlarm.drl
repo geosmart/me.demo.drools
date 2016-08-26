@@ -52,6 +52,15 @@ rule "cancle the alarm when all the fire have gone"
         System.out.println("calcel the alarm");
 end
 
+rule "Show Sprinklers" when
+    $room : Room()
+    $sprinkler : Sprinkler(room==$room)
+then
+    DroolsUtil.helper(drools);
+    System.out.println( "room:" + $room.getName() +
+                        " sprinkler:" + $sprinkler.getRoom().getName() );
+end
+
 rule "status output when things are ok"
     when
         not Alarm()

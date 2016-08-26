@@ -49,7 +49,7 @@ public class PointIssueEngineTest {
     }
 
     @After
-    public void Teardown() {
+    public void teardown() {
         System.out.println("test stop...");
     }
 }

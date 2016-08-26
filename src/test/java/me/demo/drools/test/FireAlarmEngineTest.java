@@ -64,7 +64,7 @@ public class FireAlarmEngineTest {
     }
 
     @After
-    public void Teardown() {
+    public void teardown() {
         System.out.println("test stop...");
         engine.dispose();
     }
